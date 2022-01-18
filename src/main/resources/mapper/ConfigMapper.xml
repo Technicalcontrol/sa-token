@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.demo.mapper.ConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+<!--    <resultMap id="BaseResultMap" type="com.xl.demo.domain.Config">-->
+<!--        <id column="config_id" property="configId" />-->
+<!--        <result column="config_name" property="configName" />-->
+<!--        <result column="config_key" property="configKey" />-->
+<!--        <result column="config_value" property="value" />-->
+<!--        <result column="config_type" property="type" />-->
+<!--        <result column="config_create_by" property="createBy" />-->
+<!--        <result column="config_create_time" property="time" />-->
+<!--        <result column="config_update_by" property="updateBy" />-->
+<!--        <result column="config_update_time" property="updateTime" />-->
+<!--        <result column="config_remark" property="configRemark" />-->
+<!--    </resultMap>-->
+
+
+</mapper>

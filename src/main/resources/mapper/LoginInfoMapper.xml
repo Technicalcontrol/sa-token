@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xl.demo.mapper.LoginInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.xl.demo.domain.LoginInfo">
+        <id column="info_id" property="infoId" />
+        <result column="person_name" property="personName" />
+        <result column="ip" property="ip" />
+        <result column="ip_location" property="ipLocation" />
+        <result column="browser" property="browser" />
+        <result column="os" property="os" />
+        <result column="info_status" property="infoStatus" />
+        <result column="msg" property="msg" />
+        <result column="info_time" property="infoTime" />
+    </resultMap>
+
+
+</mapper>
