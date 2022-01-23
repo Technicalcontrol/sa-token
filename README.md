@@ -9,6 +9,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/xiejiabin1/sqfx-java.svg?style=social&label=Stars)](https://github.com/Technicalcontrol/sa-token)
 [![GitHub forks](https://img.shields.io/github/forks/xiejiabin1/sqfx-java.svg?style=social&label=Fork)](https://github.com/Technicalcontrol/sa-token)
 
-# 仅供测试使用
+# 测试使用
 
 
