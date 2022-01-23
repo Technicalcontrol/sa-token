@@ -73,7 +73,9 @@ public class ExcelDataListener implements ReadListener<User> {
      * 加上存储数据库
      */
     private void saveData() {
-//        demoDAO.save(cachedDataList);
+
+        //demoDAO.save(cachedDataList);
+
         for (User user:cachedDataList){
             System.out.println(user);
         }

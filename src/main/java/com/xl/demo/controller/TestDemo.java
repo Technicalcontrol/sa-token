@@ -4,13 +4,16 @@ import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.listener.PageReadListener;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.xl.demo.annotation.Log;
 import com.xl.demo.domain.Menu;
+import com.xl.demo.domain.Role;
 import com.xl.demo.domain.User;
 import com.xl.demo.domain.vo.TreeList;
 import com.xl.demo.service.MenuService;
 import com.xl.demo.service.UserService;
+import com.xl.demo.utils.ExcelDataListener;
 import com.xl.demo.utils.MyUtils;
 import com.xl.demo.utils.RedisUtils;
 import com.xl.demo.utils.ResultJson;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -142,17 +146,17 @@ public class TestDemo {
     @ApiOperationSupport(order = 5)
     @ApiOperation("导入Excel")
     @GetMapping("/impl")
-    public void impl(String name){
+    public void impl(){
         // 注意 simpleWrite在数据量不大的情况下可以使用（5000以内，具体也要看实际情况），数据量大参照 重复多次写入
 
-        // 写法1 JDK8+
-        // since: 3.0.0-beta1
-        String fileName = "E://"+name+System.currentTimeMillis()+".xlsx";
-        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
-        // 如果这里想使用03 则 传入excelType参数即可
-        EasyExcel.write(fileName, User.class)
-                .sheet("用户信息").autoTrim(true)
-                .doWrite(userServicel.getUsersAll());
+        String fileName = "E:/user.xlsx";
+        // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
+        // 这里每次会读取3000条数据 然后返回过来 直接调用使用数据就行
+        EasyExcel.read(fileName, User.class, new PageReadListener<User>(dataList -> {
+            for (User user : dataList) {
+                System.out.println(user);
+            }
+        })).sheet().doRead();
 
     }
 }
