@@ -1,6 +1,8 @@
 package com.xl.demo.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.stp.StpUtil;
 import com.xl.demo.annotation.Log;
 import com.xl.demo.domain.Menu;
 import com.xl.demo.domain.vo.TreeList;
@@ -35,7 +37,9 @@ public class MenuController {
     @Log(title = "获取菜单",type = "查询菜单")
     @ApiOperation(("获取菜单"))
     @GetMapping("/all")
+    @SaCheckPermission("menu-all")
     public ResultJson<List<Menu>> getMenus(){
+        //StpUtil.checkPermission("menu-all");
         return ResultJson.success(menuService.getMenuAll());
     }
 
@@ -43,6 +47,7 @@ public class MenuController {
     @ApiOperation(("树形菜单"))
     @GetMapping("/tree")
     public ResultJson<List<TreeList>> getMenuTree(){
+        StpUtil.checkPermission("menu-tree");
         return ResultJson.success(menuService.getTreeMenu());
     }
 

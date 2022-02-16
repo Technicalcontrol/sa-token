@@ -1,20 +1,21 @@
 package com.xl.demo.domain;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.time.LocalDate;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
+import com.xl.demo.utils.UserSexConverter;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
  * <p>
@@ -43,6 +44,8 @@ public class User implements Serializable {
      */
     @ApiModelProperty(value = "用户账号")
     @ExcelProperty({"用户信息","用户账号"})
+    @NotBlank(message = "用户名不能为空")
+    @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9_]{4,15}$",message = "字母开头5-16字母数字下划线")
     private String username;
 
     /**
@@ -50,6 +53,8 @@ public class User implements Serializable {
      */
     @ApiModelProperty(value = "密码")
     @ExcelProperty("密码")
+    @NotBlank(message = "密码不能为空")
+    @Length(min = 5,max = 32,message = "密码长度为5-32位")
     private String password;
 
     /**
@@ -63,7 +68,8 @@ public class User implements Serializable {
      * 性别
      */
     @ApiModelProperty(value = "性别")
-    @ExcelProperty("性别")
+    @ExcelProperty(value = "性别",converter = UserSexConverter.class)
+    @Pattern(regexp = "[01]",message = "无效性别标识")
     private String sex;
 
     /**
@@ -71,7 +77,7 @@ public class User implements Serializable {
      */
     @ApiModelProperty(value = "出生日期")
     @ExcelProperty("出生日期")
-    private Date birthday;
+    private LocalDateTime birthday;
 
     /**
      * 创建日期
@@ -79,7 +85,7 @@ public class User implements Serializable {
     @ApiModelProperty(value = "创建日期")
     @TableField("create_time")
     @ExcelProperty("创建日期")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 创建者

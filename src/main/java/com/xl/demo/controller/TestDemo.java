@@ -1,35 +1,30 @@
 package com.xl.demo.controller;
 
-import cn.dev33.satoken.context.SaHolder;
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.SaSecureUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.excel.read.listener.PageReadListener;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.xl.demo.annotation.Log;
-import com.xl.demo.domain.Menu;
 import com.xl.demo.domain.Role;
 import com.xl.demo.domain.User;
 import com.xl.demo.domain.vo.TreeList;
 import com.xl.demo.service.MenuService;
 import com.xl.demo.service.UserService;
-import com.xl.demo.utils.ExcelDataListener;
 import com.xl.demo.utils.MyUtils;
 import com.xl.demo.utils.RedisUtils;
 import com.xl.demo.utils.ResultJson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -100,17 +95,16 @@ public class TestDemo {
     @ApiOperationSupport(order = 200)
     @ApiOperation("获取菜单")
     public ResultJson<List<TreeList>> getMenus(){
-        log.info("菜单获取");
-        System.out.println(userServicel.getById(6));
         return ResultJson.success(menuService.getTreeMenu());
     }
 
+    @SaCheckPermission("test-testDemo")
     @ApiOperationSupport(order = 1)
     @GetMapping("/testDemo")
     public ResultJson<String> testDemo(){
-        StpUtil.checkPermission("test-testDemo");
         return ResultJson.success("this is a JSON!");
     }
+
 
     @Log(title = "测试地址" ,type = "系统测试")
     @GetMapping("/url")
@@ -124,6 +118,13 @@ public class TestDemo {
     @GetMapping("/user")
     public ResultJson<List<User>> getUsers(){
         return ResultJson.success(userServicel.getUsersAll());
+    }
+
+    @ApiOperationSupport(order = 15)
+    @ApiOperation("本地获取所有用户")
+    @GetMapping("/user2")
+    public ResultJson<List<User>> getUsers2(){
+        return ResultJson.success(userServicel.list());
     }
 
     @ApiOperationSupport(order = 2)
@@ -152,11 +153,16 @@ public class TestDemo {
         String fileName = "E:/user.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         // 这里每次会读取3000条数据 然后返回过来 直接调用使用数据就行
-        EasyExcel.read(fileName, User.class, new PageReadListener<User>(dataList -> {
-            for (User user : dataList) {
-                System.out.println(user);
-            }
-        })).sheet().doRead();
-
+        try{
+            EasyExcel.read(fileName, User.class, new PageReadListener<User>(dataList -> {
+                // userServicel.saveBatch(dataList);
+                for (User user:dataList){
+                    System.out.println(user);
+                }
+            })).sheet().doRead();
+        }catch (ExcelDataConvertException e){
+            throw new RuntimeException("文件数据错误，请核对数据");
+        }
     }
+
 }

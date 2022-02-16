@@ -1,6 +1,7 @@
 package com.xl.demo.controller;
 
 
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class UserController {
     @ApiOperation("新增用户")
     @Log(title = "新增用户",type = "新增")
     @PostMapping("/add")
-    public ResultJson<BooRes> addUser(@RequestBody User user){
+    public ResultJson<BooRes> addUser(@Validated @RequestBody User user){
         StpUtil.checkPermission("user-add");
         return ResultJson.success(userService.addUser(user));
     }
@@ -53,11 +55,7 @@ public class UserController {
     @DeleteMapping("/{userIds}")
     public ResultJson<BooRes> delUsers(@PathVariable Long[] userIds){
         StpUtil.checkPermission("user-del");
-        List<Long> ids = new ArrayList<>();
-        for (Long id:userIds){
-            ids.add(id);
-        }
-        return ResultJson.success(userService.delUser(ids));
+        return ResultJson.success(userService.delUser(userIds));
     }
 
     @ApiOperation("查询用户")

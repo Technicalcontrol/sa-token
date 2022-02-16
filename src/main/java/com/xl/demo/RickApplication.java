@@ -6,10 +6,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@MapperScan(basePackages = {"com.xl.demo.mapper"})
+/**
+ * @author xl
+ */
+
+
 @Slf4j
 @SpringBootApplication
-@EnableAspectJAutoProxy
+//@EnableAspectJAutoProxy
 public class RickApplication {
 
     public static void main(String[] args) {

@@ -68,8 +68,10 @@ spring:
 
 #mybatis-plus整合配置
 mybatis-plus:
+  # mapper扫描包
+  mapper-package: com.**.**.mapper
   mapper-locations: classpath:mapper/*Mapper.xml
-  type-aliases-package: com.xl.demo.domain
+  type-aliases-package: com.**.**.domain
   configuration:
     map-underscore-to-camel-case: true
 

@@ -1,6 +1,7 @@
 package com.xl.demo.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2022/1/11 16:11
  */
 @Configuration
+@MapperScan("${mybatis-plus.mapper-package}")
 @ConditionalOnClass(value = {PaginationInterceptor.class})
 public class MybatisPlusConfig {
     @Bean

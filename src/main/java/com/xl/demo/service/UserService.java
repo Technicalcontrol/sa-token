@@ -36,7 +36,7 @@ public interface UserService extends IService<User> {
      * @param userIds 用户ID集
      * @return BooRes
      */
-    BooRes delUser(List<Long> userIds);
+    BooRes delUser(Long[] userIds);
 
     /**
      *  更新用户

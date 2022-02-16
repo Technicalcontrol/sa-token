@@ -50,6 +50,7 @@ public class StpInterfaceImpl  implements StpInterface {
                 list.add(role.getRoleKey());
             }
         }
+        System.out.println(list);
         return list;
     }
 }

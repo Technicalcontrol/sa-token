@@ -15,7 +15,6 @@ import java.util.List;
  * @author XL
  * @since 2022-01-12
  */
-@DS("ds_1")
 public interface UserMapper extends BaseMapper<User> {
 
     /**
@@ -29,6 +28,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 动态获取数据
      * @return List
      */
+    @DS("ds_1")
     List<User> getUsers();
 
 }

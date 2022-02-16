@@ -16,7 +16,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xl.demo.utils.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -48,35 +54,31 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public BooRes addUser(User user) {
         BooRes booRes = new BooRes();
         booRes.setRes(false);
-        if(user!=null){
-            User user1 = userMapper.selectOne(new QueryWrapper<User>().eq("username",user.getUsername()));
-            if(user1==null){
-                user.setPassword(SaSecureUtil.md5(user.getPassword()));
-                user.setCreateBy(getUserName());
-                user.setCreateTime(new Date());
-                int res = userMapper.insert(user);
-                if(res > 0){
-                    booRes.setRes(true);
-                    booRes.setMsg("添加成功");
-                }else{
-                    booRes.setMsg("添加失败");
-                }
+        User user1 = userMapper.selectOne(new QueryWrapper<User>().eq("username",user.getUsername()));
+        if(user1==null){
+            user.setPassword(SaSecureUtil.md5(user.getPassword()));
+            user.setCreateBy(getUserName());
+            user.setCreateTime(LocalDateTime.now());
+            int res = userMapper.insert(user);
+            if(res > 0){
+                booRes.setRes(true);
+                booRes.setMsg("添加成功");
             }else{
-                booRes.setMsg("用户名参数错误");
+                booRes.setMsg("添加失败");
             }
         }else{
-            booRes.setMsg("用户参数为空");
+            booRes.setMsg("用户名已被注冊");
         }
         return booRes;
     }
 
     @Override
-    public BooRes delUser(List<Long> userIds) {
+    public BooRes delUser(Long[] ids) {
         BooRes booRes = new BooRes();
         booRes.setRes(false);
-        if(userIds!=null && userIds.size()>0){
-            int res = userMapper.deleteUsers(userIds);
-            if(res > 0){
+        if(ids!=null && ids.length>0){
+            List<Long> userIds = new ArrayList<>(Arrays.asList(ids));
+            if(removeByIds(userIds)){
                 booRes.setRes(true);
                 booRes.setMsg("删除成功");
             }else{
@@ -89,6 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public BooRes updateUser(User user) {
         BooRes booRes = new BooRes();
         booRes.setRes(false);
@@ -145,4 +148,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<User> getUsersAll() {
         return userMapper.getUsers();
     }
+
 }
