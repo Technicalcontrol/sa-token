@@ -44,7 +44,7 @@ spring:
       max-request-size:  800MB
   redis:
     # 地址
-    host: 127.0.0.1
+    host: 127.0.0.1 # 127.0.0.1
     # 端口，默认为6379
     port: 6379
     # 连接服务密码默认为空
@@ -83,4 +83,4 @@ logging:
 #    com.xl: debug
 #    org.springframework: warn
   file:
-    path: E:\logs
+    path: D:\logs

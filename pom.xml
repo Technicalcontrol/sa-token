@@ -164,6 +164,11 @@
             <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
             <version>${dynamic.version}</version>
         </dependency>
+        <!-- springboot整合ActiveMq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>
 
     </dependencies>
 

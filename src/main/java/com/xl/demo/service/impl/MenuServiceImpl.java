@@ -48,11 +48,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public List<TreeList> getTreeMenu() {
         List<TreeList> menus = null;
         try{
-            if(redisUtils.exists("menu")){
-                menus = redisUtils.get("menu");
+            if(redisUtils.hasKey("menu")){
+                menus = redisUtils.getCacheList("menu");
             }else{
                 List<TreeList> list  = getTreeMenuFromData();
-                redisUtils.set("menu",list);
+                redisUtils.setCacheList("menu",list);
                 menus = list;
             }
         }catch (RedisConnectionFailureException e){

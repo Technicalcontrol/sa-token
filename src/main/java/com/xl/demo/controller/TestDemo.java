@@ -21,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,16 +48,19 @@ public class TestDemo {
     @Autowired
     private UserService userServicel;
 
+    @Value("${rick.name}")
+    private String name;
+
     @GetMapping("/demo")
     public String demo(){
-        return "Hello World!";
+        return name+"Hello World!";
     }
 
     @GetMapping("/set/key")
     @ApiOperation("设置键值")
     @ApiOperationSupport(order = 250)
     public ResultJson<String> setKey(String name,String value){
-        redisUtils.set(name,value);
+        redisUtils.setCacheObject(name,value);
         return ResultJson.success(name+"设置成功！");
     }
 
@@ -65,7 +69,7 @@ public class TestDemo {
     @ApiOperationSupport(order = 251)
     public ResultJson<Object> getKey(String name){
         String value = "没有"+name;
-        Object obj = redisUtils.get(name);
+        Object obj = redisUtils.getCacheObject(name);
         if(obj==null){
             obj = value;
         }

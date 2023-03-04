@@ -31,13 +31,13 @@ import java.util.Date;
 @Service
 public class LoginInfoServiceImpl extends ServiceImpl<LoginInfoMapper, LoginInfo> implements LoginInfoService {
 
-    @Autowired(required = false)
+    @Autowired
     private ConfigMapper configMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private UserMapper userMapper;
 
-    @Autowired(required = false)
+    @Autowired
     private LoginInfoMapper loginInfoMapper;
 
     @Override
