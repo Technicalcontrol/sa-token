@@ -48,11 +48,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public List<TreeList> getTreeMenu() {
         List<TreeList> menus = null;
         try{
-            if(redisUtils.hasKey("menu")){
-                menus = redisUtils.getCacheList("menu");
+            // Redis的key允许有多个单词形成层级结构，多个单词之间用 ：隔开，格式如：项目名：业务名：类型：id
+            String MENU_KEY = "system:menu";
+            if(redisUtils.hasKey(MENU_KEY)){
+                menus = redisUtils.getCacheList(MENU_KEY);
             }else{
                 List<TreeList> list  = getTreeMenuFromData();
-                redisUtils.setCacheList("menu",list);
+                redisUtils.setCacheList(MENU_KEY,list);
                 menus = list;
             }
         }catch (RedisConnectionFailureException e){
